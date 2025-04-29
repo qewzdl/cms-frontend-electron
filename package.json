@@ -1,11 +1,24 @@
 {
-  "name": "electron-cms",
+  "name": "cms-frontend-electron",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qewzdl/cms-frontend-electron.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qewzdl/cms-frontend-electron/issues"
+  },
+  "homepage": "https://github.com/qewzdl/cms-frontend-electron#readme",
+  "description": "",
   "devDependencies": {
-    "electron": "^25.0.0"
+    "electron": "^36.0.0"
   }
 }

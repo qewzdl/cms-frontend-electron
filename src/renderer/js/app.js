@@ -1,8 +1,22 @@
 let currentChat = null;
-let pollingInterval = null;
+const socket = io('http://109.172.115.156:5000');
+
+socket.on('connect', () => {
+  console.log('✅ WebSocket connected, id:', socket.id);
+});
+socket.on('connect_error', err => {
+  console.error('❌ WS connection error:', err);
+});
+
+socket.on('new_message', data => {
+  console.log('← new_message', data);
+  if (currentChat && +data.user_id === +currentChat.id) {
+    appendMessage(data);
+  }
+  loadMessages(currentChat.id, false);
+});
 
 document.getElementById('logout-btn').addEventListener('click', () => {
-  clearInterval(pollingInterval);
   localStorage.clear();
   window.location.href = 'login.html';
 });
@@ -22,7 +36,6 @@ async function fetchWithAuth(url, options = {}) {
       localStorage.setItem('access_token', tokens.access_token);
       res = await fetch(url, options);
     } else {
-      clearInterval(pollingInterval);
       localStorage.clear();
       window.location.href = 'login.html';
       throw new Error('Session expired');
@@ -57,8 +70,6 @@ async function loadChats() {
       }
     
       loadMessages(chat.id, true);
-      clearInterval(pollingInterval);
-      pollingInterval = setInterval(() => loadMessages(chat.id, false), 5000);
     });
     
     list.appendChild(li);
@@ -89,13 +100,13 @@ async function loadMessages(userId, withAnimation = false) {
   container.scrollTop = container.scrollHeight;
 }
 
-document.getElementById('msg-text').addEventListener('input', () => {
-  const text = document.getElementById('msg-text').value.trim();
-  if (text.length > 0) {
+document.getElementById('msg-text').addEventListener('input', function() {
+  const hasText = this.value.trim().length > 0;
+
+  if (hasText) {
     document.getElementById('send-btn').classList.add('active');
   } else {
     document.getElementById('send-btn').classList.remove('active');
-    return;
   }
 });
 
@@ -113,6 +124,8 @@ document.getElementById('send-btn').addEventListener('click', async () => {
     })
   });
   document.getElementById('msg-text').value = '';
+  document.getElementById('send-btn').classList.remove('active');
+  
   loadMessages(currentChat.id, false); 
 });
 

@@ -1,3 +1,10 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('access_token');
+  if (token) {
+    window.location.href = 'app.html';
+  }
+});
+
 document.getElementById('login-btn').addEventListener('click', async () => {
   const login = document.getElementById('login').value;
   const password = document.getElementById('password').value;

@@ -363,4 +363,16 @@ async function sendFileMessage(file, contentType) {
   }
 }
 
-window.onload = loadChats;
+window.onload = () => {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    window.location.href = 'login.html';
+    return;
+  }
+  const loginName = localStorage.getItem('login');
+  if (loginName) {
+    const loginTextElement = document.getElementById('login-text');
+    if (loginTextElement) loginTextElement.innerText = loginName;
+  }
+  loadChats();
+};

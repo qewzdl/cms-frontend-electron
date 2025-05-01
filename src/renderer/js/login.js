@@ -11,6 +11,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     const data = await res.json();
     localStorage.setItem('access_token', data.access_token);
     localStorage.setItem('refresh_token', data.refresh_token);
+    localStorage.setItem('login', login);
     window.location.href = 'app.html';
   } catch (e) {
     const errorElement = document.getElementById('login-error');

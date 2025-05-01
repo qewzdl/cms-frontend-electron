@@ -321,6 +321,24 @@ body {
     width: 100%;
     object-fit: cover;
 }
+.message a {
+    background-color: rgba(0, 0, 0, 0.2);
+    height: 50px;
+    border-radius: 8px;
+    padding: 8px 32px;
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+}
+.message a:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
   
 .close-button {
     position: absolute;
@@ -347,6 +365,8 @@ body {
     font-size: 12px;
     display: flex;
     justify-content: flex-end;
+    margin-top: 8px;
+    user-select: none;
 }
 
 .incoming .message-time {

@@ -164,7 +164,7 @@ body {
     padding: 8px; 
     overflow-y: auto; 
     display: flex; 
-    flex-direction: column-reverse; 
+    flex-direction: column; 
     width: 100%;
 }
 
@@ -219,14 +219,17 @@ body {
 }
 
 #send-btn { 
+    transition: background-color 0.2s ease-in-out;
+}
+
+.message-input-btn {
+    width: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
     height: 37px;
     border-radius: 8px;
     border: none;
-    transition: background-color 0.2s ease-in-out;
 }
 
 #send-btn.active { 
@@ -265,4 +268,102 @@ body {
 #message-input-send-btn {
     display: flex;
     align-items: end;
+}
+
+#message-input-btns {
+    display: flex;
+    gap: 8px;
+}
+
+#image-btn, #file-btn {
+    cursor: pointer;
+    background-color: var(--color-primary);
+    width: 37px;
+}
+#image-btn:hover, #file-btn:hover {
+    background-color: var(--color-primary-hover);
+}
+#image-btn:active, #file-btn:active {
+    background-color: var(--color-primary-active);
+}
+
+.image-viewer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    cursor: zoom-out;
+}
+  
+.image-viewer-overlay.visible {
+    opacity: 1;
+}
+  
+.image-viewer-content {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    transition: transform 0.3s;
+    pointer-events: none;
+}
+  
+.message img {
+    cursor: pointer;
+    max-height: 250px;
+    border-radius: 8px;
+    width: 100%;
+    object-fit: cover;
+}
+  
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.close-button:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.message-time {
+    width: auto;
+    font-size: 12px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.incoming .message-time {
+    color: #888888;
+}
+
+.date-separator {
+    text-align: center;
+    margin: 16px 0;
+    font-size: 0.9em;
+    color: #666;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.19,1,0.22,1);
+}
+
+.date-separator.visible {
+    opacity: 1;
+    transform: translateY(0);
 }

@@ -15,7 +15,6 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     window.location.href = 'app.html';
   } catch (e) {
     const errorElement = document.getElementById('login-error');
-    errorElement.innerText = 'Login failed';
     errorElement.style.display = 'flex';
     
     setTimeout(() => {

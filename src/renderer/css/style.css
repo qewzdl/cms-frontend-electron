@@ -53,15 +53,12 @@ body {
 #login-error {
     display: none;
     position: absolute;
-    width: 150px;
-    height: 75px;
     background-color: #ffffff;
     border: 1px solid #cccccc;
     border-radius: 8px;
     color: var(--color-error);
-    justify-content: center;
-    align-items: center;
     font-weight: bold;
+    padding: 32px;
 }
 
 #app-header {
@@ -116,7 +113,7 @@ body {
 
 #logout-btn::after {
     position: absolute;
-    content: 'Logout';
+    content: 'Выйти';
     right: 10px;
     opacity: 0%;
     transition: opacity 0.2s ease-in-out;

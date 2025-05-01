@@ -2,9 +2,20 @@
   "name": "cms-frontend-electron",
   "version": "1.0.0",
   "main": "main.js",
+  "build": {
+    "appId": "com.yourdomain.cms",
+    "directories": {
+      "output": "dist"
+    },
+    "files": ["**/*"],
+    "win": {"target": "nsis"},
+    "mac": {"target": "dmg"},
+    "linux": {"target": "AppImage"}
+  },
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist": "electron-builder"
   },
   "repository": {
     "type": "git",
@@ -19,6 +30,7 @@
   "homepage": "https://github.com/qewzdl/cms-frontend-electron#readme",
   "description": "",
   "devDependencies": {
-    "electron": "^36.0.0"
+    "electron": "^36.0.0",
+    "electron-builder": "^26.0.12"
   }
 }

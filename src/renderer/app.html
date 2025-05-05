@@ -9,7 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div id="loading-panel">
+    <div class="dots">
+      <div></div><div></div><div></div>
+    </div>    
+  </div>
+
   <div id="app-header">
+    <div id="activity-status-container">
+      <div class="activity-status" id="status-online">Онлайн<div class="indicator"></div></div>
+      <div class="activity-status" id="status-offline">Оффлайн<div class="indicator"></div></div>
+    </div>
     <div id="app-header-profile">
       <h3 id=""><span class="key-text">Сотрудник: </span><span id="login-text">Your Login</span></h3>
       <!--<h4><span class="key-text">Role: </span><span id="role-text">Manager</span></h4>-->
@@ -17,7 +27,15 @@
   </div>
 
   <div id="app-view">
-    <div id="sidebar">
+    <div id="messager-list-section">
+      <ul id="messager-list">
+        <li class="active"><img class="messager-icon" src="./assets/images/telegram-logo.png" height="40"><span class="messager-name">Telegram</span><div class="notification"></div></li>
+        <li><img class="messager-icon" src="./assets/images/whatsapp.logo.png" height="40"><span class="messager-name">WhatsApp</span><div class="notification"></div></li>
+        <li><img class="messager-icon" src="./assets/images/vk-logo.png" height="40"><span class="messager-name">VK</span><div class="notification"></div></li>
+      </ul>
+    </div>
+
+    <div id="chat-list-section">
       <h3>Чаты</h3>
       <ul id="chat-list"></ul>
       <div id="logout-btn-container">
@@ -59,6 +77,6 @@
     </div>
   </div>
   <script src="https://cdn.socket.io/4.1.2/socket.io.min.js"></script>
-  <script src="js/app.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

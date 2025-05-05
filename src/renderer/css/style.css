@@ -455,6 +455,15 @@ body {
 .messenger-icon {
     position: relative;
 }
+#messenger-list {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0;
+}
+#messenger-list::-webkit-scrollbar {
+    width: 0px;
+}
 #messenger-list > li.active::after {
     position: absolute;
     top: 0;

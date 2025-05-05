@@ -406,26 +406,26 @@ body {
     background-color: var(--color-offline);
     border-radius: 100%;
 }
-#messager-list-section {
+#messenger-list-section {
     min-width: 72px;
     width: 72px;
     transition: width 0.3s ease-in-out;
     border-right: 1px solid #cccccc;
 }
-#messager-list-section:hover {
+#messenger-list-section:hover {
     width: 170px;
 }
-#messager-list-section:hover .messager-name {
+#messenger-list-section:hover .messenger-name {
     opacity: 100%;
 }
 
-#messager-list {
+#messenger-list {
     padding: 0;
     list-style: none;
     user-select: none;
 }
 
-#messager-list > li {
+#messenger-list > li {
     padding: 16px;
     display: flex;
     align-items: center;
@@ -434,28 +434,28 @@ body {
     transition: background-color 0.1s ease-in-out;
     position: relative;
 }
-#messager-list > li:hover {
+#messenger-list > li:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.05);
 }
-#messager-list > li > span {
+#messenger-list > li > span {
     pointer-events: none
 }
-#messager-list > li.active {
+#messenger-list > li.active {
     background-color: var(--color-primary);
     color: white;
     font-weight: bold;
     position: relative;
 }
 
-.messager-name {
+.messenger-name {
     opacity: 0%;
     transition: opacity 0.2s ease-in-out;
 }
-.messager-icon {
+.messenger-icon {
     position: relative;
 }
-#messager-list > li.active::after {
+#messenger-list > li.active::after {
     position: absolute;
     top: 0;
     left: 0;
@@ -467,7 +467,7 @@ body {
     border-radius: 100%;
 }
 
-#messager-list-section li > .notification {
+#messenger-list-section li > .notification {
     width: 12px;
     height: 12px;
     background-color: transparent;
@@ -476,7 +476,7 @@ body {
     left: 45px;
     top: 15px;
 }
-#messager-list-section li > .notification.active {
+#messenger-list-section li > .notification.active {
     background-color: red;
 }
 

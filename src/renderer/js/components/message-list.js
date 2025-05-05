@@ -8,32 +8,34 @@ export class MessageList {
     }
   
     async load(userId, telegramAccountId, withAnimation = false, delay = 30) {
-      const res = await this.authService.get(`/chats/messages/${userId}/${telegramAccountId}`);
-      const msgs = await res.json();
-      this.container.innerHTML = '';
-      msgs.sort((a, b) =>
-        new Date(a.date || a.created_at) - new Date(b.date || b.created_at)
-      );
-  
-      let lastDate = null, idx = 0;
-      for (const msg of msgs) {
-        const ds = this.formatDate(new Date(msg.date || msg.created_at));
-        if (ds !== lastDate) {
-          const sep = document.createElement('div');
-          sep.className = 'date-separator';
-          sep.textContent = ds;
-          this.container.appendChild(sep);
-          lastDate = ds;
-          if (withAnimation) setTimeout(() => sep.classList.add('visible'), delay * idx++);
-          else sep.classList.add('visible');
+      try {
+        const res = await this.authService.get(`/chats/messages/${userId}/${telegramAccountId}`);
+        const msgs = await res.json();
+        this.container.innerHTML = '';
+        msgs.sort((a, b) =>
+          new Date(a.date || a.created_at) - new Date(b.date || b.created_at)
+        );
+    
+        let lastDate = null, idx = 0;
+        for (const msg of msgs) {
+          const ds = this.formatDate(new Date(msg.date || msg.created_at));
+          if (ds !== lastDate) {
+            const sep = document.createElement('div');
+            sep.className = 'date-separator';
+            sep.textContent = ds;
+            this.container.appendChild(sep);
+            lastDate = ds;
+            if (withAnimation) setTimeout(() => sep.classList.add('visible'), delay * idx++);
+            else sep.classList.add('visible');
+          }
+          const el = this.renderer.render(msg);
+          this.container.appendChild(el);
+          if (withAnimation) setTimeout(() => el.classList.add('visible'), delay * idx++);
+          else el.classList.add('visible');
         }
-        const el = this.renderer.render(msg);
-        this.container.appendChild(el);
-        if (withAnimation) setTimeout(() => el.classList.add('visible'), delay * idx++);
-        else el.classList.add('visible');
+      } finally {
+        this.scrollToBottom(this.container.id);
       }
-  
-      this.scrollToBottom(this.container.id);
     }
   }
   

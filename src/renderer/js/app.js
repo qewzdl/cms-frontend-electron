@@ -37,22 +37,17 @@ const socketService = new SocketService('http://109.172.115.156:5000');
 socketService.on('connect',       () => { setOnline(true);  setTimeout(loadChats, 1000); });
 socketService.on('connect_error', () => { setOnline(false); });
 socketService.on('new_message', data => {
-  if (currentChat && +data.message.user_id === +currentChat.id) {
+  const msg = data.message;
+
+  if (currentChat && +msg.user_id === +currentChat.id) {
     messageList.load(currentChat.id, currentChat.telegram_account_id, false);
-    return;
-  }
-  const chatItem = document.querySelector(
-    `#chat-list li[data-id="${data.message.user_id}"]`
-  );
-  console.log('chatItem', chatItem);
-  if (chatItem) {
-    const badge = chatItem.querySelector('.notification');
-    badge.classList.remove('inactive');
-    badge.classList.add('active');
+  } else {
+    loadChats(false); 
   }
 });
 
-socketService.on('new_chat',      loadChats);
+
+socketService.on('new_chat', loadChats);
 socketService.connect();
 
 // UI-компоненты
@@ -61,7 +56,7 @@ const chatList = new ChatList({
   onSelect: chat => {
     currentChat = chat;
     document.getElementById('message-input').style.display = 'flex';
-    loadMessages(chat.id, chat.telegram_account_id, true);
+    messageList.load(chat.id, chat.telegram_account_id, true);
     scrollToBottom('message-list');
 
     const chatItem = document.querySelector(
@@ -71,6 +66,10 @@ const chatList = new ChatList({
       const badge = chatItem.querySelector('.notification');
       badge.classList.remove('active');
       badge.classList.add('inactive');
+
+      authService.request(`/chats?chat_id=${chat.id}&telegram_account_id=${chat.telegram_account_id}`, {
+        method: 'PATCH'
+      });
     }
   }
 });
@@ -96,8 +95,8 @@ const fileUploader = new FileUploader({
 });
 
 // Функции загрузки данных
-async function loadChats() {
-  loadingPanel.show();
+async function loadChats(enableLoading = true) {
+  if (enableLoading) loadingPanel.show();
   try {
     const res = await authService.get('/chats');
     const chats = await res.json();
@@ -106,11 +105,8 @@ async function loadChats() {
     }
     chatList.update(chats);
   } finally {
-    loadingPanel.hide();
+    if (enableLoading) loadingPanel.hide();
   }
-}
-function loadMessages(userId, telegramAccountId, withAnimation = false) {
-  return messageList.load(userId, telegramAccountId, withAnimation);
 }
 
 const messageInput = new MessageInput({

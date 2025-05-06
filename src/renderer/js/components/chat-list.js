@@ -43,11 +43,11 @@ export class ChatListItem {
     li.dataset.id = chat.id;
     li.classList.toggle('active', isActive);
     li.innerHTML = `
-      <div>
-        <div class="chat-username">${chat.user_name}</div>
-        <div class="account-name">Аккаунт: ${chat.account_name}</div>
-      </div>
-      <div class="notification inactive"></div>
+    <div>
+      <div class="chat-username">${chat.user_name}</div>
+      <div class="account-name">Аккаунт: ${chat.account_name}</div>
+    </div>
+    <div class="notification ${chat.unread ? 'active' : 'inactive'}"></div>
     `;
     this.element = li;
   }

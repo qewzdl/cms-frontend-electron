@@ -9,7 +9,7 @@
     --color-online: #18d411;
     --color-offline: #b6b6b6;
 
-    --color-notification: #ee0b0b;
+    --color-important: #ee0b0b;
 }
 
 * {
@@ -121,7 +121,7 @@ body {
     content: 'Выйти';
     right: 10px;
     opacity: 0%;
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
     font-weight: bold;
 }
 
@@ -489,7 +489,7 @@ body {
     top: 15px;
 }
 #messenger-list-section li > .notification.active {
-    background-color: var(--color-notification);
+    background-color: var(--color-important);
 }
 
 #chat-list-section li {
@@ -503,7 +503,7 @@ body {
     border-radius: 100%;
 }
 #chat-list-section li > .notification.active {
-    background-color: var(--color-notification);
+    background-color: var(--color-important);
     animation: pulse 1.5s ease-in-out infinite;
 }
 .account-name {

@@ -8,6 +8,8 @@
 
     --color-online: #18d411;
     --color-offline: #b6b6b6;
+
+    --color-notification: #ee0b0b;
 }
 
 * {
@@ -272,6 +274,7 @@ body {
 
 #message-input-btns {
     display: flex;
+    align-items: flex-end;
     gap: 8px;
 }
 
@@ -486,7 +489,7 @@ body {
     top: 15px;
 }
 #messenger-list-section li > .notification.active {
-    background-color: red;
+    background-color: var(--color-notification);
 }
 
 #chat-list-section li {
@@ -500,7 +503,8 @@ body {
     border-radius: 100%;
 }
 #chat-list-section li > .notification.active {
-    background-color: red;
+    background-color: var(--color-notification);
+    animation: pulse 1.5s ease-in-out infinite;
 }
 .account-name {
     font-size: 10px;
@@ -563,4 +567,19 @@ body {
     align-items: center;
 
     transition: opacity 0.35s ease-in-out;
+}
+
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
 }

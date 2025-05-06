@@ -10,6 +10,13 @@ import { SocketService }   from './services/socket-service.js';
 import { MessageRenderer } from './components/message-renderer.js';
 import { MessageList }     from './components/message-list.js';
 import { MessengerList }   from './components/messenger-list.js';
+import { MessageInput } from './components/message-input.js';
+import { LogoutButton } from './components/logout-button.js';
+
+new LogoutButton({
+  selector: '#logout-btn',
+  redirectUrl: 'login.html'
+});
 
 let currentChat = null;
 
@@ -20,7 +27,7 @@ function setOnline(isOnline) {
 
 // Конфигурация мессенджеров
 const messengerConfigs = [
-  { id: 'telegram', name: 'Telegram', icon: './assets/images/telegram-logo.png', active: true  },
+  { id: 'telegram', name: 'Telegram', icon: './assets/images/telegram-logo.png' },
   { id: 'whatsapp', name: 'WhatsApp', icon: './assets/images/whatsapp-logo.png' },
   { id: 'vk',       name: 'VK',       icon: './assets/images/vk-logo.png'       }
 ];
@@ -29,20 +36,45 @@ const messengerConfigs = [
 const socketService = new SocketService('http://109.172.115.156:5000');
 socketService.on('connect',       () => { setOnline(true);  setTimeout(loadChats, 1000); });
 socketService.on('connect_error', () => { setOnline(false); });
-socketService.on('new_message',   () => { if (currentChat) messageList.load(currentChat.id, currentChat.telegram_account_id, false); });
+socketService.on('new_message', data => {
+  if (currentChat && +data.message.user_id === +currentChat.id) {
+    messageList.load(currentChat.id, currentChat.telegram_account_id, false);
+    return;
+  }
+  const chatItem = document.querySelector(
+    `#chat-list li[data-id="${data.message.user_id}"]`
+  );
+  console.log('chatItem', chatItem);
+  if (chatItem) {
+    const badge = chatItem.querySelector('.notification');
+    badge.classList.remove('inactive');
+    badge.classList.add('active');
+  }
+});
+
 socketService.on('new_chat',      loadChats);
 socketService.connect();
 
 // UI-компоненты
-const chatList     = new ChatList({
+const chatList = new ChatList({
   containerId: 'chat-list',
   onSelect: chat => {
     currentChat = chat;
     document.getElementById('message-input').style.display = 'flex';
     loadMessages(chat.id, chat.telegram_account_id, true);
     scrollToBottom('message-list');
+
+    const chatItem = document.querySelector(
+      `#chat-list li[data-id="${chat.id}"]`
+    );
+    if (chatItem) {
+      const badge = chatItem.querySelector('.notification');
+      badge.classList.remove('active');
+      badge.classList.add('inactive');
+    }
   }
 });
+
 const loadingPanel = new LoadingPanel('loading-panel');
 const imageViewer  = new ImageViewer();
 const authService  = new AuthService();
@@ -80,6 +112,26 @@ async function loadChats() {
 function loadMessages(userId, telegramAccountId, withAnimation = false) {
   return messageList.load(userId, telegramAccountId, withAnimation);
 }
+
+const messageInput = new MessageInput({
+  inputSelector:    '#msg-text',
+  sendBtnSelector:  '#send-btn',
+  getCurrentChat:   () => currentChat,
+  renderMessage:    msg => {
+    const el = renderer.render(msg);
+    document.getElementById('message-list').appendChild(el);
+    setTimeout(() => el.classList.add('visible'), 10);
+    return el;
+  },
+  onSend: async (text, chat) => {
+    await authService.post('/chats/messages/send', {
+      user_id: chat.id,
+      message_text: text,
+      telegram_account_id: chat.telegram_account_id
+    });
+  },
+  scrollToBottom: () => scrollToBottom('message-list')
+});
 
 // Инициализация после загрузки DOM
 window.addEventListener('DOMContentLoaded', () => {

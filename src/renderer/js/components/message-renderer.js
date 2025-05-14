@@ -21,7 +21,7 @@ class BaseRenderer {
   export class TextRenderer extends BaseRenderer {
     render(msg) {
       const div = document.createElement('div');
-      div.classList.add('message', msg.type || '');
+      div.classList.add('message', msg.type || '', msg.content_type || '');
       div.textContent = msg.message_text || '';
       this.appendTime(div, msg);
       return div;
@@ -36,7 +36,7 @@ class BaseRenderer {
   
     render(msg) {
       const div = document.createElement('div');
-      div.classList.add('message', msg.type || '');
+      div.classList.add('message', msg.type || '', msg.content_type || '');
       const img = document.createElement('img');
       const src = this.resolvePath(msg.file_path);
       img.src = src;
@@ -50,12 +50,14 @@ class BaseRenderer {
   
   export class FileRenderer extends BaseRenderer {
     render(msg) {
+      console.log(msg);
       const div = document.createElement('div');
-      div.classList.add('message', msg.type || '');
+      div.classList.add('message', msg.type || '', msg.content_type || '');
       const a = document.createElement('a');
-      a.href = this.resolvePath(msg.file_path);
+      a.href   = this.resolvePath(msg.file_path);
       a.textContent = msg.file_name || 'Download';
-      a.target = '_blank';
+      a.download    = msg.file_name || ''; 
+      a.target      = '_blank';
       div.appendChild(a);
       this.appendTime(div, msg);
       return div;
@@ -65,7 +67,7 @@ class BaseRenderer {
   export class AudioRenderer extends BaseRenderer {
     render(msg) {
       const div = document.createElement('div');
-      div.classList.add('message', msg.type || '');
+      div.classList.add('message', msg.type || '', msg.content_type || '');
       const audio = document.createElement('audio');
       audio.controls = true;
       audio.src = this.resolvePath(msg.file_path);
@@ -78,7 +80,7 @@ class BaseRenderer {
   export class VideoRenderer extends BaseRenderer {
     render(msg) {
       const div = document.createElement('div');
-      div.classList.add('message', msg.type || '');
+      div.classList.add('message', msg.type || '', msg.content_type || '');
       const video = document.createElement('video');
       video.controls = true;
       video.src = this.resolvePath(msg.file_path);

@@ -10,6 +10,8 @@
     --color-offline: #b6b6b6;
 
     --color-important: #ee0b0b;
+
+    --chat-notification-size: 12px;
 }
 
 * {
@@ -150,6 +152,10 @@ body {
     transition: background 0.1s ease-in-out;
 }
 
+#chat-list-section li > .chat-info {
+    overflow-x: hidden;
+}
+
 #chat-list-section li:hover { 
     background: rgba(0, 0, 0, 0.05); 
 }
@@ -178,6 +184,11 @@ body {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.19,1,0.22,1);
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    word-break: break-word;
 }
 .message.visible {
     opacity: 1;
@@ -196,6 +207,7 @@ body {
     color: #ffffff;
     border-radius: 8px 0 8px 8px; 
 }
+
 
 #message-input { 
     display: none; 
@@ -317,30 +329,42 @@ body {
     pointer-events: none;
 }
   
-.message img {
+.message.image img {
     cursor: pointer;
     max-height: 250px;
     border-radius: 8px;
     width: 100%;
     object-fit: cover;
 }
-.message a {
+.message.file a {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
     background-color: rgba(0, 0, 0, 0.2);
     height: 50px;
     border-radius: 8px;
-    padding: 8px 32px;
     color: #ffffff;
     text-decoration: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     transition: background-color 0.2s ease-in-out;
     cursor: pointer;
 }
 .message a:hover {
     background-color: rgba(0, 0, 0, 0.4);
+}
+.message.file a::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url('../assets/images/file-icon.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 8px;
 }
   
 .close-button {
@@ -498,8 +522,11 @@ body {
     align-items: center;
 }
 #chat-list-section li > .notification {
-    width: 12px;
-    height: 12px;
+    min-width: var(--chat-notification-size);
+    max-width: var(--chat-notification-size);
+    min-height: var(--chat-notification-size);
+    max-height: var(--chat-notification-size);
+    background-color: transparent;
     border-radius: 100%;
 }
 #chat-list-section li > .notification.active {
@@ -545,11 +572,6 @@ body {
 }
 .dots div:nth-child(2) { animation-delay: 0.2s; }
 .dots div:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50%      { transform: scale(1.25); opacity: 1; }
-}
 
 #chat-loading-panel {
     position: absolute;

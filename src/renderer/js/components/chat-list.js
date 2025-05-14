@@ -1,3 +1,5 @@
+import { ChatListItem } from './chat-list-item.js';
+
 export class ChatList {
   constructor({ containerId, onSelect }) {
     this.container = document.getElementById(containerId);
@@ -23,7 +25,11 @@ export class ChatList {
   select(chatId) {
     this.currentChatId = chatId;
     Array.from(this.container.children).forEach(li => {
-      li.classList.toggle('active', +li.dataset.id === +chatId);
+      if (li.dataset.id === chatId) {
+        li.classList.add('active');
+      } else {
+        li.classList.remove('active');
+      }
     });
     if (this.onSelect) {
       const chat = this.lastChats.find(c => c.id === chatId);
@@ -37,18 +43,4 @@ export class ChatList {
   }
 }
 
-export class ChatListItem {
-  constructor({ chat, isActive = false }) {
-    const li = document.createElement('li');
-    li.dataset.id = chat.id;
-    li.classList.toggle('active', isActive);
-    li.innerHTML = `
-    <div>
-      <div class="chat-username">${chat.user_name}</div>
-      <div class="account-name">Аккаунт: ${chat.account_name}</div>
-    </div>
-    <div class="notification ${chat.unread ? 'active' : 'inactive'}"></div>
-    `;
-    this.element = li;
-  }
-}
+

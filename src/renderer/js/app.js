@@ -22,7 +22,7 @@ let currentChat = null;
 
 function setOnline(isOnline) {
   document.getElementById('status-online').style.display  = isOnline ? 'flex' : 'none';
-  document.getElementById('status-offline').style.display = isOnline ? 'none'  : 'flex';
+  document.getElementById('status-offline').style.display = isOnline ? 'none' : 'flex';
 }
 
 // Конфигурация мессенджеров
@@ -34,18 +34,18 @@ const messengerConfigs = [
 
 // SocketService
 const socketService = new SocketService('http://109.172.115.156:5000');
-socketService.on('connect',       () => { setOnline(true);  setTimeout(loadChats, 1000); });
+socketService.on('connect',       () => { setOnline(true); loadChats(); });
 socketService.on('connect_error', () => { setOnline(false); });
 socketService.on('new_message', data => {
   const msg = data.message;
-
-  if (currentChat && +msg.user_id === +currentChat.id) {
+  if (currentChat === null) {
+    loadChats(false); 
+  } else if (+msg.user_id === +currentChat.user_id) {
     messageList.load(currentChat.id, currentChat.telegram_account_id, false);
   } else {
     loadChats(false); 
   }
 });
-
 
 socketService.on('new_chat', loadChats);
 socketService.connect();
@@ -76,18 +76,18 @@ const chatList = new ChatList({
 
 const loadingPanel = new LoadingPanel('loading-panel');
 const imageViewer  = new ImageViewer();
-const authService  = new AuthService();
 const renderer     = new MessageRenderer(imageViewer);
+const authService  = new AuthService();
 const messageList  = new MessageList({
-  containerId:  'message-list',
+  containerId: 'message-list',
   renderer,
   authService,
-  formatDate:   formatDateSeparator,
+  formatDate: formatDateSeparator,
   scrollHelper: scrollToBottom
 });
 const fileUploader = new FileUploader({
-  imageBtnId:    'image-btn',
-  fileBtnId:     'file-btn',
+  imageBtnId: 'image-btn',
+  fileBtnId: 'file-btn',
   authService,
   appendMessage: msg => renderer.render(msg),
   messageListId: 'message-list',
@@ -100,6 +100,7 @@ async function loadChats(enableLoading = true) {
   try {
     const res = await authService.get('/chats');
     const chats = await res.json();
+
     if (!currentChat) {
       document.getElementById('message-input').style.display = 'none';
     }
@@ -107,13 +108,13 @@ async function loadChats(enableLoading = true) {
   } finally {
     if (enableLoading) loadingPanel.hide();
   }
-}
+} 
 
 const messageInput = new MessageInput({
-  inputSelector:    '#msg-text',
-  sendBtnSelector:  '#send-btn',
-  getCurrentChat:   () => currentChat,
-  renderMessage:    msg => {
+  inputSelector: '#msg-text',
+  sendBtnSelector: '#send-btn',
+  getCurrentChat: () => currentChat,
+  renderMessage: msg => {
     const el = renderer.render(msg);
     document.getElementById('message-list').appendChild(el);
     setTimeout(() => el.classList.add('visible'), 10);
@@ -148,5 +149,4 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   const ln = localStorage.getItem('login');
   if (ln) document.getElementById('login-text').innerText = ln;
-  loadChats();
 });

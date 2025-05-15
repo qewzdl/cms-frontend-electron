@@ -1,5 +1,5 @@
 :root {
-    --color-primary-light: rgb(78, 106, 233);
+    --color-primary-light: rgb(78, 106, 233); 
     --color-primary: rgb(68, 99, 236);
     --color-primary-hover: rgb(68, 91, 218);
     --color-primary-active: rgb(68, 79, 190);
@@ -12,6 +12,9 @@
     --color-important: #ee0b0b;
 
     --chat-notification-size: 12px;
+
+    --list-item-margin-inline: 4px;
+    --list-itme-border-radius: 8px;
 }
 
 * {
@@ -84,7 +87,7 @@ body {
 }
 
 #chat-list-section { 
-    width: 250px; 
+    width: 300px; 
     border-right: 1px solid #cccccc; 
     display: flex; 
     flex-direction: column; 
@@ -150,6 +153,8 @@ body {
     padding: 16px; 
     cursor: pointer; 
     transition: background 0.1s ease-in-out;
+    margin: var(--list-item-margin-inline);
+    border-radius: var(--list-itme-border-radius)
 }
 
 #chat-list-section li > .chat-info {
@@ -158,6 +163,10 @@ body {
 
 #chat-list-section li:hover { 
     background: rgba(0, 0, 0, 0.05); 
+}
+
+.chat-username {
+    height: 22px;
 }
 
 #chat-view { 
@@ -434,16 +443,7 @@ body {
     border-radius: 100%;
 }
 #messenger-list-section {
-    min-width: 72px;
-    width: 72px;
-    transition: width 0.3s ease-in-out;
     border-right: 1px solid #cccccc;
-}
-#messenger-list-section:hover {
-    width: 170px;
-}
-#messenger-list-section:hover .messenger-name {
-    opacity: 100%;
 }
 
 #messenger-list {
@@ -453,13 +453,16 @@ body {
 }
 
 #messenger-list > li {
-    padding: 16px;
+    width: 68px;
+    height: 68px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    justify-content: center;
     overflow-x: none;
     transition: background-color 0.1s ease-in-out;
     position: relative;
+    margin: var(--list-item-margin-inline);
+    border-radius: var(--list-itme-border-radius);
 }
 #messenger-list > li:hover {
     cursor: pointer;
@@ -481,6 +484,7 @@ body {
 }
 .messenger-icon {
     position: relative;
+    height: 32px;
 }
 #messenger-list {
     height: 100%;

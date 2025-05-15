@@ -28,15 +28,12 @@ export class Messenger {
       img.className = 'messenger-icon';
       img.src = this.icon;
       img.height = 40;
-  
-      const span = document.createElement('span');
-      span.className = 'messenger-name';
-      span.textContent = this.name;
+
   
       const notif = document.createElement('div');
       notif.className = 'notification';
   
-      li.append(img, span, notif);
+      li.append(img, notif);
       this.notificationElement = notif;
       return li;
     }

@@ -42,6 +42,18 @@ socketService.on('new_message', data => {
     loadChats(false); 
   } else if (+msg.user_id === +currentChat.user_id) {
     messageList.load(currentChat.id, currentChat.telegram_account_id, false);
+    const chatItem = document.querySelector(
+      `#chat-list li[data-id="${currentChat.id}"]`
+    );
+    if (chatItem) {
+      const badge = chatItem.querySelector('.notification');
+      badge.classList.remove('active');
+      badge.classList.add('inactive');
+
+      authService.request(`/chats?chat_id=${currentChat.id}&telegram_account_id=${currentChat.telegram_account_id}`, {
+        method: 'PATCH'
+      });
+    }
   } else {
     loadChats(false); 
   }

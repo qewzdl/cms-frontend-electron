@@ -1,5 +1,7 @@
+import { Config } from '../config.js';
+
 export class SocketService {
-    constructor(url) {
+    constructor(url = Config.baseUrl) {
       this.url = url;
       this.handlers = {};
       this.socket = null;

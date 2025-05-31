@@ -1,3 +1,5 @@
+import { Config } from './config.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('access_token');
   if (token) {
@@ -9,7 +11,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
   const login = document.getElementById('login').value;
   const password = document.getElementById('password').value;
   try {
-    const res = await fetch('https://savychk1.fvds.ru/api/v1/authorization', {
+    const res = await fetch(Config.apiBaseUrl + Config.endpoints.authorization, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ login, password })

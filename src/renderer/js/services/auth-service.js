@@ -1,5 +1,7 @@
+import { Config } from '../config.js';
+
 export class AuthService {
-    constructor(baseUrl = 'https://savychk1.fvds.ru/api/v1') {
+    constructor(baseUrl = Config.apiBaseUrl) {
       this.baseUrl = baseUrl;
     }
     /**
@@ -39,6 +41,20 @@ export class AuthService {
         body: JSON.stringify(body)
       });
     }
+
+    patch(endpoint, body, options = {}) {
+      const headers = { 'Content-Type': 'application/json', ...options.headers };
+      return this.request(endpoint, {
+        ...options,
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify(body)
+      });
+    }
+
+    delete(endpoint, options = {}) {
+      return this.request(endpoint, { ...options, method: 'DELETE' });
+    }
   
     postForm(endpoint, formData) {
       return this.request(endpoint, {
@@ -49,7 +65,7 @@ export class AuthService {
   
     async refreshToken() {
       const refreshToken = localStorage.getItem('refresh_token');
-      const res = await fetch(`${this.baseUrl}/authorization/refresh`, {
+      const res = await fetch(this.baseUrl + Config.endpoints.refreshToken, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${refreshToken}` }
       });

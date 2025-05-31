@@ -1,3 +1,5 @@
+import { Config } from '../config.js';
+
 export class FileUploader {
     constructor({ imageBtnId, fileBtnId, authService, appendMessage, messageListId, getCurrentChat }) {
       this.authService = authService;
@@ -70,7 +72,7 @@ export class FileUploader {
       formData.append('telegram_account_id', chat.telegram_account_id);
   
       try {
-        await this.authService.postForm('/chats/messages/send', formData);
+        await this.authService.postForm(Config.endpoints.send, formData);
       } catch (err) {
         console.error('File upload error', err);
       }

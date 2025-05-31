@@ -1,3 +1,5 @@
+import { Config } from '../config.js';
+
 export class MessageList {
     constructor({ containerId, renderer, authService, formatDate, scrollHelper }) {
       this.container   = document.getElementById(containerId);
@@ -7,9 +9,9 @@ export class MessageList {
       this.scrollToBottom = scrollHelper;
     }
   
-    async load(userId, telegramAccountId, withAnimation = false, delay = 30) {
+    async load(chat_id, telegramAccountId, withAnimation = false, delay = 30) {
       try {
-        const res = await this.authService.get(`/chats/messages/${userId}/${telegramAccountId}`);
+        const res = await this.authService.get(Config.endpoints.messages + `/${chat_id}`);
         const msgs = await res.json();
         this.container.innerHTML = '';
         msgs.sort((a, b) =>

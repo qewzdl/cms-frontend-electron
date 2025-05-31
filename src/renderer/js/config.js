@@ -9,4 +9,15 @@ export class Config {
     messages: `/chats/messages`,
     send: `/chats/messages/send`,
   };
+
+  static stopWords = [
+    /\b\d{11}\b/g,
+    /\+\d{11,13}/g,
+    /\b\d{16}\b/g,
+    /tme\/?[^\s]*/i,
+    /мойтелеграм/i,
+    /мойтг/i,
+    /вкком/i,
+    /vkcom\/?[^\s]*/i
+  ];
 }
